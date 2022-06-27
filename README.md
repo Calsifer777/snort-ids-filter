@@ -41,4 +41,4 @@ sudo chown -R <user>:<group> /var/log/snort
 
 ## 使用方式
 - 範例
-```python3 main.py 20220101_00_ftp_cluster_mul_snort.rules.txt /etc/snort/rules/test/target_rules.txt -p packet_table_20220101_00_中華電信_ftp_pcap.pickle tcp_payload 9999 192.168.0.19 80 ./test.pkl```
+- ```python3 main.py 20220101_00_ftp_cluster_mul_snort.rules.txt /etc/snort/rules/test/target_rules.txt -p packet_table_20220101_00_中華電信_ftp_pcap.pickle tcp_payload 9999 192.168.0.19 80 ./test.pkl```
