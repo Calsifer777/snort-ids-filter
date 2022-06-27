@@ -5,8 +5,7 @@
 	- [upcloud-How to install Snort on Ubuntu](https://upcloud.com/resources/tutorials/install-snort-ubuntu)
 	- https://stackoverflow.com/questions/36215201/python-scapy-sniff-without-root
 	- https://www.vultr.com/docs/working-with-linux-capabilities/
-## Snort 安裝、客製化 Rules、配置與執行
-- 看上面連結 WRITING CUSTOM SNORT RULES 這篇，照著做基本就沒啥大問題了。
+
 ## 建 snort 專用 user
 - 如要使用已有的 user，跳過這步。
 ```
@@ -29,5 +28,5 @@ sudo chown -R <user>:<group> /var/log/snort
 - 修改 capability 才能讓 snort 有建立 socket 的權限。
 - snort binary 若是用 apt-get install 的安裝方式，是在 /usr/sbin 下。
 - scapy 也需要修改 capability，才能順利發送測試封包。
-`setcap cap_net_raw=eip /usr/sbin/snort`
-`setcap cap_net_raw=eip /usr/bin/pythonX.X`
+- `setcap cap_net_raw=eip /usr/sbin/snort`
+- `setcap cap_net_raw=eip /usr/bin/pythonX.X`
