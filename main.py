@@ -18,7 +18,12 @@ if __name__ == "__main__" :
     	sys.exit()
     else:
     	if '-h' in sys.argv:
-    	    print('''Usage: <src_rule_file> <target_rule_file> <test_option> <target_file> <payload_col> <src_port> <dst_ip> <dst_port>''')
+    	    print('''
+Usage: <src_rule_file> <target_rule_file> <test_option> <target_file> <payload_col> <src_port> <dst_ip> <dst_port>
+
+target_rule_file : target_rule_file is a rule file that specifies include in snort.conf. The script modifies the target_rule_file each time to make the actual configured rule in snort.conf different, so that there is no need to modify the include of snort.conf every time
+
+test_option to dst_port : can see the snort_test_script.py''')
     	else:
             #./20220101_00_ftp_cluster_mul_snort.rules.txt, /etc/snort/rules/test/target_rules.txt
             config_rule(sys.argv[1], sys.argv[2])
