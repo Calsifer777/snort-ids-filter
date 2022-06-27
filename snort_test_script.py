@@ -73,7 +73,7 @@ def packet_test(parm):
     print(f"total packet: {cnt}")
     
 if __name__ == '__main__':
-    if len(sys.argv) < 6 and sys.argv[1] != '-h':
+    if len(sys.argv) < 7 and sys.argv[1] != '-h':
     	print("try '-h' for more information")
     	sys.exit()
     else:
