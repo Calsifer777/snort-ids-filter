@@ -13,8 +13,8 @@ def get_payload(pkt):
 def check_bytes(x):
     if type(x) == bytes:
         x = str(x)[2:-1]
-    else:
-        x = str(bytes(x, 'utf-8'))[2:-1]
+    #else:
+    #    x = str(bytes(x, 'utf-8'))[2:-1]
     return x
 
 def packet_check_filter(x, f_payload_list):
@@ -29,8 +29,7 @@ def session_check_filter(x, f_payload_list):
         i = check_bytes(i)
         if i in f_payload_list:
             return False
-        else:
-            return True
+    return True
 
 if __name__ == '__main__':
     if len(sys.argv) < 4 and '-h' not in sys.argv:
@@ -57,15 +56,11 @@ output_file : output filterd Packet/Session table.
             if sys.argv[2] == '-p':
                 packet_table = pd.read_pickle(sys.argv[3])
                 # packet_table['tmp_col'] = packet_table[sys.argv[4]].apply(check_bytes)
-                packet_table = packet_table[packet_table[sys.argv[4]].apply(lambda x: packet_check_filter(x, f_payload_list))]
+                packet_table = packet_table[packet_table[sys.argv[4]].apply(lambda x: packet_check_filter(x, f_payload_list))].reset_index()
                 packet_table.to_pickle(sys.argv[5])
                 
             elif sys.argv[2] == '-s':
                 session_table = pd.read_pickle(sys.argv[3])
-                # payload_list = []
-                # for i in tqdm(data[sys.argv[4]]):
-                #     payload_list += check_bytes(i)
-                # session_table['tmp_col'] = packet_table.tcp_payload.apply(check_bytes)
-                session_table = session_table[session_table[sys.argv[4]].apply(lambda x: session_check_filter(x, f_payload_list))]
-                session_table.to_pickle(sys.argv[4])
+                session_table = session_table[session_table[sys.argv[4]].apply(lambda x: session_check_filter(x, f_payload_list))].reset_index()
+                session_table.to_pickle(sys.argv[5])
         sys.exit()

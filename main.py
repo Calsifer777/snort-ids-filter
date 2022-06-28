@@ -7,8 +7,9 @@ def config_rule(src, dst):
     os.system(f'cp {src} {dst}')
 
 def run_snort():
-    os.system(f'snort -T -i ens33 -c /etc/snort/snort.conf')
-    os.system(f'snort -A console -q -c /etc/snort/snort.conf -i ens33 &')
+    #start up snort on lo (loopback interface) to test in locol
+    os.system(f'snort -T -i lo -c /etc/snort/snort.conf')
+    os.system(f'snort -A console -q -c /etc/snort/snort.conf -i lo &')
 
 def stop_snort():
     os.system("ps -ef | grep snort | grep -v grep | grep -v python | awk '{print $2}' | xargs kill")
@@ -29,10 +30,11 @@ test_option to dst_port : can see the snort_test_script.py
 output_file : output filterd Packet/Session table.
 ''')
     	else:
+            start = time.time()
             #./20220101_00_ftp_cluster_mul_snort.rules.txt, /etc/snort/rules/test/target_rules.txt
             config_rule(sys.argv[1], sys.argv[2])
             run_snort()
-            script_parm = " ".join(sys.argv[3:])
+            script_parm = " ".join(sys.argv[3:-1])
             # -p packet_table_20220101_00_中華電信_ftp_pcap.pickle tcp_payload 9999 192.168.0.19 80
             subprocess.call(f"python3 snort_test_script.py {script_parm}", shell=True)
             print('Filter finish!')
@@ -42,3 +44,5 @@ output_file : output filterd Packet/Session table.
             filterd_param = " ".join(["/var/log/snort", sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[9]])
             subprocess.call(f"python3 generate_filtered_table.py {filterd_param}", shell=True)
             print('Filterd Packet/Session Table Generate Success!')
+            end = time.time()
+            print('Execution Time:', end - start)

@@ -7,8 +7,8 @@ import time
 def check_bytes(x):
     if type(x) == bytes:
         x = str(x)[2:-1]
-    # else:
-    #     x = str(bytes(x, 'utf-8'))[2:-1]
+    #else:
+    #    x = str(bytes(x, 'utf-8'))[2:-1]
     return x
 
 ######## Cluster Packet Test ########
@@ -40,17 +40,18 @@ def check_bytes(x):
 #         print(f"Cluster {k} total packet: {cnt}")
 
 ########## Session Test ##########
-def session_test():
+def session_test(parm):
     #data = pd.read_pickle('./clustered_20220101_00_中華電信_http.pkl')
     target_file, payload_col, src_port, dst_ip, dst_port = parm
     data = pd.read_pickle(target_file)
     cnt = 0
     
     payload_list = []
-    for i in tqdm(data['tcp_i_payload_list']):
-        payload_list += check_bytes(i)
+    for i in tqdm(data[payload_col]):
+        payload_list += i
     
     for i in tqdm(list(set(payload_list))):
+        i = check_bytes(i)
         print(i)
         pack=IP(dst=dst_ip)/TCP(sport=int(src_port), dport=int(dst_port))/i #測試目標 IP, srcport
         send(pack)

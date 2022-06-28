@@ -34,11 +34,14 @@ sudo chown -R <user>:<group> /var/log/snort
 ## 其他注意事項
 - snort_test_script.py 是 scapy 發測試封包的腳本
 - generate_filtered_table.py 是讀 log 檔產生過濾後 Packet/Session table 的腳本
-- 初次使用 snort 的 HOME_NET、RULE_PATH 等需自行配置
+- 初次使用 snort 的 HOME_NET(127.0.0.1)、RULE_PATH 等需自行配置
+- 腳本的測試是在 locol 端收發封包，因此 snort 是架在 loop-back interface 上 (linux 的 lo)，在 main.py 的 run_snort()可以看到。
 - 腳本中的 target_rule_file 是 snort.conf 中指定 include 的一個 rule file，腳本透過每次修改該 target_rule_file 使 snort.conf 實際配置的 rule 不同，如此便不需每次修改 snort.conf 的 include
 - target_rule_file 在 /etc/snort/rules 資料夾下隨便建立一個檔案就可以 (ex: /etc/snort/rules/test/target_rule.txt)
 - main.py 中 call generate_filtered_table api 的 log_dst_dir 參數因預設是 /var/log/snort，所以直接寫在裡面，若 log 非存在該位置，需自行修改。
 
 ## 使用方式
-- 範例
-- ```python3 main.py 20220101_00_ftp_cluster_mul_snort.rules.txt /etc/snort/rules/test/target_rules.txt -p packet_table_20220101_00_中華電信_ftp_pcap.pickle tcp_payload 9999 192.168.0.19 80 ./test.pkl```
+- packet 範例
+- ```python3 main.py 20220101_00_ftp_cluster_mul_snort.rules.txt /etc/snort/rules/test/target_rules.txt -p packet_table_20220101_00_中華電信_ftp_pcap.pickle tcp_payload 9999 127.0.0.1 80 ./test.pkl```
+- session 範例
+- ```python3 main.py session/20220101_00_http_ 中華電信_cluster_mul_snort.rules.txt /etc/snort/rules/test/target_rules.txt -s session/clustered_20220101_00_中華電信_http.pkl tcp_i_payload_list 9999 127.0.0.1 80 ./session/test.pkl```
